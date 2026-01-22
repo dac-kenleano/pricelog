@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/providers/supabase_providers.dart';
 import '../../auth/data/auth_repository.dart';
@@ -19,7 +20,10 @@ class HomePage extends ConsumerWidget {
         title: const Text('PriceCoco'),
         actions: [
           TextButton(
-            onPressed: () => ref.read(authRepositoryProvider).signOut(),
+            onPressed: () {
+              ref.read(authRepositoryProvider).signOut();
+              context.push('/login');
+            },
             child: const Text('Logout'),
           ),
         ],

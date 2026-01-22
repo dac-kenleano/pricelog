@@ -11,6 +11,9 @@ final authStateChangesProvider = StreamProvider<AuthState>((ref) {
 });
 
 final currentUserProvider = Provider<User?>((ref) {
+  // Watch the auth state changes to ensure this provider updates when auth state changes
+  ref.watch(authStateChangesProvider);
   final client = ref.watch(supabaseClientProvider);
   return client.auth.currentUser;
 });
+

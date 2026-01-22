@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -23,11 +25,16 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
+    final redirect = Platform.isAndroid || Platform.isIOS
+        ? 'pricecoco://login-callback'
+        : 'https://yizxrjiyltdkhgdivhwq.supabase.co/auth/v1/callback';
+
     return _client.auth.signUp(
       email: email,
       password: password,
+      emailRedirectTo: redirect,
       data: {
-        'displayName': email.split('@').first,
+        'display_name': email.split('@').first,
       },
     );
   }

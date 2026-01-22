@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pricelog/features/auth/presentation/auth_gate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PriceCocoApp extends StatelessWidget {
+import '../router/app_router.dart';
+
+class PriceCocoApp extends ConsumerWidget {
   const PriceCocoApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(goRouterProvider);
+
+    return MaterialApp.router(
       title: 'PriceCoco',
       theme: ThemeData(useMaterial3: true),
-      home: const AuthGate(),
+      routerConfig: router,
     );
   }
 }

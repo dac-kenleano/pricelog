@@ -16,5 +16,12 @@ Future<void> main() async {
     anonKey: Env.supabaseAnonKey,
   );
 
+  Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+    final session = data.session;
+    if (session != null) {
+      // user authenticated successfully
+    }
+  });
+
   runApp(const ProviderScope(child: PriceCocoApp()));
 }

@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../data/auth_repository.dart';
-import 'register_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -48,6 +50,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             email: email,
             password: password,
           );
+      log('Login successful for $email');
+      // Navigation is handled automatically by GoRouter's redirect when auth state changes
     } on AuthException catch (e) {
       setState(() => _msg = e.message);
     } catch (e) {
@@ -58,15 +62,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   void _goToRegister() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const RegisterPage()),
-    );
+    context.go('/register');
   }
 
   @override
   Widget build(BuildContext context) {
+    log('Message: $_msg');
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
+      appBar: AppBar(title: const Text('Sign in!')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

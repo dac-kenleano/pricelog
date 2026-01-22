@@ -23,4 +23,17 @@ class ProfileRepository {
   Future<Map<String, dynamic>?> getProfile(String uid) async {
     return _client.from('profiles').select().eq('id', uid).maybeSingle();
   }
+
+  Future<void> verifyProfileEmail(String uid) async {
+    final updated = await _client
+        .from('profiles')
+        .update({'email_verified': true})
+        .eq('id', uid)
+        .select()
+        .maybeSingle();
+
+    if (updated == null) {
+      throw Exception('Failed to update profile for id: $uid');
+    }
+  }
 }

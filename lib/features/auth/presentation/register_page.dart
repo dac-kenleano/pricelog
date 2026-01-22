@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../data/auth_repository.dart';
 
@@ -63,8 +66,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       if (res.session == null) {
         setState(() => _msg = 'Check your email to confirm your account.');
       } else {
-        // If session exists, user is signed in. Go back to gate (pop pages).
-        if (mounted) Navigator.of(context).pop();
+        // If session exists, user is signed in. Navigate to home via GoRouter.
+        if (mounted) {
+          // Use the router to go to /home
+          // ignore: use_build_context_synchronously
+          context.go('/home');
+        }
       }
     } on AuthException catch (e) {
       setState(() => _msg = e.message);
@@ -77,6 +84,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    log('MESSAGE: $_msg');
     return Scaffold(
       appBar: AppBar(title: const Text('Create account')),
       body: Padding(
