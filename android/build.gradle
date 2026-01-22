@@ -12,7 +12,33 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+// groovy
+// groovy
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
 
+    tasks.withType(JavaCompile).configureEach { JavaCompile javaCompile ->
+        // Always set source/target compatibility for all modules
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+
+        // Only set options.release for non-Android java-only projects
+        if (!(project.plugins.hasPlugin('com.android.application')
+              || project.plugins.hasPlugin('com.android.library')
+              || project.plugins.hasPlugin('com.android.test'))) {
+            options.release = 17
+        } else {
+            // Ensure Android modules do not use --release flag
+            // Android Gradle plugin will manage the bootclasspath/toolchain
+        }
+    }
+}
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+
